@@ -1,0 +1,91 @@
+/* Overall container - Full Screen Height */
+.auth-container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    padding: 20px; /* Slight padding from left & right */
+  }
+  
+  /* Left Section - Form Styling */
+  .form-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* Slight padding */
+    height: 100vh; /* Full height */
+  }
+  
+  .form-container {
+    width: 100%;
+    max-width: 450px; /* Slightly wider for better appearance */
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Input Fields */
+  .input-group-text {
+    border-radius: 50px 0 0 50px;
+    width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .form-control {
+    border-radius: 0 50px 50px 0;
+  }
+  
+  /* Right Section - Full Background */
+  .auth-right {
+    background: url("../assets/travel.jpg") no-repeat center center/cover;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    height: 100vh;
+    width: 100%;
+  }
+  
+  /* Dark Overlay to Improve Text Visibility */
+  .auth-right .overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+  }
+  
+  /* Overlay Text */
+  .auth-right h3, 
+  .auth-right p {
+    position: relative;
+    z-index: 1;
+    color: white;
+    text-align: center;
+    padding: 0 20px;
+  }
+  
+  /* Responsive - Stack Columns on Small Screens */
+  @media (max-width: 768px) {
+    .auth-container {
+      flex-direction: column;
+      padding: 0;
+    }
+  
+    .form-section, 
+    .auth-right {
+      width: 100%;
+      height: auto;
+      padding: 40px 20px;
+    }
+  
+    .auth-right {
+      display: none; /* Hide background on smaller screens */
+    }
+  }
+  
