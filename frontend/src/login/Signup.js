@@ -1,11 +1,8 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles/Auth.css";
-import { FaEnvelope, FaLock, FaUser, FaPhone } from "react-icons/fa";
 
 function Signup() {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -14,115 +11,97 @@ function Signup() {
     confirmPassword: "",
   });
 
-  const [isPasswordVisible, setPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-    alert("Account Created Successfully!");
-    navigate("/login");
+    
+    try {
+      const response = await fetch("http://localhost:5000/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+        }),
+      });
+      
+      const data = await response.json();
+      alert(data.message);
+    } catch (error) {
+      alert("Error signing up");
+    }
   };
 
   return (
-    <div className="container-fluid vh-100 d-flex align-items-center justify-content-center">
-      <div className="row w-100 auth-container">
-        
-        {/* Left Section - Signup Form */}
-        <div className="col-md-6 d-flex align-items-center justify-content-center form-section">
-          <div className="p-5 shadow rounded form-container">
-            <h2 className="fw-bold text-center mb-4">Create an Account</h2>
-            
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card p-4">
+            <h2 className="text-center mb-4">Sign Up</h2>
             <form onSubmit={handleSignup}>
-              <div className="mb-3 input-group">
-                <span className="input-group-text bg-light"><FaUser /></span>
+              <div className="mb-3">
+                <label className="form-label">Full Name</label>
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Full Name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
                 />
               </div>
-
-              <div className="mb-3 input-group">
-                <span className="input-group-text bg-light"><FaEnvelope /></span>
+              <div className="mb-3">
+                <label className="form-label">Email</label>
                 <input
                   type="email"
                   className="form-control"
-                  placeholder="Email Address"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
                 />
               </div>
-
-              <div className="mb-3 input-group">
-                <span className="input-group-text bg-light"><FaPhone /></span>
+              <div className="mb-3">
+                <label className="form-label">Phone Number</label>
                 <input
                   type="tel"
                   className="form-control"
-                  placeholder="Phone Number"
                   pattern="[0-9]{10}"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   required
                 />
               </div>
-
-              <div className="mb-3 input-group">
-                <span className="input-group-text bg-light"><FaLock /></span>
+              <div className="mb-3">
+                <label className="form-label">Password</label>
                 <input
-                  type={isPasswordVisible ? "text" : "password"}
+                  type="password"
                   className="form-control"
-                  placeholder="Password (Min 6 chars)"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  minLength="6"
                   required
                 />
-                <button type="button" className="btn btn-light" onClick={() => setPasswordVisible(!isPasswordVisible)}>
-                  {isPasswordVisible ? "🙈" : "👁️"}
-                </button>
               </div>
-
-              <div className="mb-3 input-group">
-                <span className="input-group-text bg-light"><FaLock /></span>
+              <div className="mb-3">
+                <label className="form-label">Confirm Password</label>
                 <input
-                  type={isConfirmPasswordVisible ? "text" : "password"}
+                  type="password"
                   className="form-control"
-                  placeholder="Confirm Password"
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                   required
                 />
-                <button type="button" className="btn btn-light" onClick={() => setConfirmPasswordVisible(!isConfirmPasswordVisible)}>
-                  {isConfirmPasswordVisible ? "🙈" : "👁️"}
-                </button>
               </div>
-
-              <button type="submit" className="btn btn-success w-100 mt-2">Create Account</button>
+              <button type="submit" className="btn btn-primary w-100">Sign Up</button>
             </form>
-
-            <p className="mt-4 text-center">
-              Already have an account? <Link to="/login" className="text-primary">Login</Link>
+            <p className="mt-3 text-center">
+              Already have an account? <Link to="/login">Login</Link>
             </p>
           </div>
         </div>
-
-        {/* Right Section - Background Image */}
-        <div className="col-md-6 auth-right d-flex align-items-center justify-content-center position-relative text-white">
-          <div className="overlay"></div>
-          <div className="text-center position-relative">
-            <h3 className="fw-bold">Explore the World</h3>
-            <p>Travel is the only thing you buy that makes you richer.</p>
-          </div>
-        </div>
-
       </div>
     </div>
   );
